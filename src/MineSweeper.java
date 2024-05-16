@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class MineSweeper {
@@ -68,16 +69,34 @@ public class MineSweeper {
         while (!gameOver) {
             System.out.println("Oyun Başladı!!!");
             printBoard(gameBoard);
-            System.out.println("Hamle yapmak istediğiniz noktayı seçiniz:");
-            int row = input.nextInt();
-            int column = input.nextInt();
-            //Invalid move check.
-            if (row < 0 || row >= line || column < 0 || column >= colm) {
-                System.out.println("Geçersiz satır veya sütun sayısı.Lütfen yeniden veri giriniz. ");
-            }//Point control where a move has been made before.
-            if (repeat[row][column]) {
-                System.out.println("Bu nokta daha önce kontrol edildi.");
-            }//Mine stepping situation.
+            int row = 0;
+            int column = 0;
+            boolean checkIndex = false;
+
+            while (!checkIndex) {
+                System.out.println("Hamle yapmak istediğiniz noktayı seçiniz:");
+                try {
+                    row = input.nextInt();
+                    column = input.nextInt();
+
+                    //Invalid move check.
+                    if (row < 0 || row >= line || column < 0 || column >= colm) {
+                        System.out.println("Geçersiz satır veya sütun sayısı.Lütfen yeniden veri giriniz. ");
+                        input.nextLine();
+                    } else if (repeat[row][column]) {//Point control where a move has been made before.
+                        System.out.println("Bu nokta daha önce kontrol edildi.");
+                        input.nextLine();
+                    } else {
+                        checkIndex = true;
+                    }
+
+                } catch (InputMismatchException e) {
+                    System.out.println("Lütfen  tam sayı bir değer giriniz!");
+                    input.nextLine();
+                }
+
+            }
+            //Mine stepping situation.
             if (minefield[row][column] == '*') {
                 System.out.println("Mayına bastınız! Oyun bitti. ");
                 gameOver = true;
@@ -85,8 +104,8 @@ public class MineSweeper {
                 repeat[row][column] = true;
                 gameBoard[row][column] = infoMine(row, column);
                 //Game win situation.
-                if (isWin(gameBoard)) {
-                    System.out.println("Oyunu kazandınız.");
+                if (isWin(gameBoard, repeat)) {
+                    System.out.println("Tebrikler Oyunu kazandınız.");
                     gameOver = true;
                 }
             }
@@ -96,10 +115,10 @@ public class MineSweeper {
     }
 
     //Checks if the given game board is completely filled.
-    static boolean isWin(char[][] gameBorad) {
-        for (char[] row : gameBorad) {
-            for (char cell : row) {
-                if (cell == '-') {
+    static boolean isWin(char[][] gameBorad, boolean[][] repeat) {
+        for (int i = 0; i < minefield.length; i++) {
+            for (int j = 0; j < minefield[i].length; j++) {
+                if (minefield[i][j] == '-' && !repeat[i][j]) {
                     return false;
                 }
             }
