@@ -49,13 +49,8 @@ public class MineSweeper {
         }
     }
 
-    //The game is run with the method.
-    static void runMinefield() {
-        Scanner input = new Scanner(System.in);
-        int line = minefield.length;
-        int colm = minefield[0].length;
+    static char[][] createMineFieldForUser(int line, int colm) {
         char[][] gameBoard = new char[line][colm];
-        boolean[][] repeat = new boolean[line][colm];
         //Fills the game board with the '-' character.
         for (int i = 0; i < line; i++) {
             for (int j = 0; j < colm; j++) {
@@ -63,6 +58,17 @@ public class MineSweeper {
 
             }
         }
+        return gameBoard;
+
+    }
+
+    //The game is run with the method.
+    static void startMineFieldGame() {
+        Scanner input = new Scanner(System.in);
+        int line = minefield.length;
+        int colm = minefield[0].length;
+        char[][] gameBoard = createMineFieldForUser(line, colm);
+        boolean[][] repeat = new boolean[line][colm];
 
         boolean gameOver = false;
         //Moves are taken from the user and the game loop is created.
@@ -97,7 +103,7 @@ public class MineSweeper {
 
             }
             //Mine stepping situation.
-            if (minefield[row][column] == '*') {
+            if (checkSteppingSituation(minefield[row][column])) {
                 System.out.println("Mayına bastınız! Oyun bitti. ");
                 gameOver = true;
             } else {
@@ -111,6 +117,15 @@ public class MineSweeper {
             }
 
 
+        }
+    }
+
+    //Checks the mine status in the steps.
+    static boolean checkSteppingSituation(char minefield) {
+        if (minefield == '*') {//if minefield equels to '*' return true.
+            return true;
+        } else {//otherwise return false.
+            return false;
         }
     }
 
