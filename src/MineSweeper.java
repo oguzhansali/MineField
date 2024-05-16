@@ -49,7 +49,9 @@ public class MineSweeper {
         }
     }
 
+    //A game board is created for the users.
     static char[][] createMineFieldForUser(int line, int colm) {
+        //The game board is filled with '-'.
         char[][] gameBoard = new char[line][colm];
         //Fills the game board with the '-' character.
         for (int i = 0; i < line; i++) {
@@ -58,6 +60,7 @@ public class MineSweeper {
 
             }
         }
+        // We rotate the created game board.
         return gameBoard;
 
     }
