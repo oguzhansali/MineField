@@ -75,7 +75,7 @@ public class MineSweeper {
 
             while (!checkIndex) {
                 System.out.println("Hamle yapmak istediğiniz noktayı seçiniz:");
-                try {
+                try {//The entry of the row and column is taken.
                     row = input.nextInt();
                     column = input.nextInt();
 
@@ -86,11 +86,11 @@ public class MineSweeper {
                     } else if (repeat[row][column]) {//Point control where a move has been made before.
                         System.out.println("Bu nokta daha önce kontrol edildi.");
                         input.nextLine();
-                    } else {
+                    } else {//Exits the loop on the current move.
                         checkIndex = true;
                     }
 
-                } catch (InputMismatchException e) {
+                } catch (InputMismatchException e) {//Catches an invalid number input instead of an integer.
                     System.out.println("Lütfen  tam sayı bir değer giriniz!");
                     input.nextLine();
                 }
